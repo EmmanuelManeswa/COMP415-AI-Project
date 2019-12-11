@@ -10,41 +10,16 @@
  */
 
 #include <iostream>
-#include <fstream>
-#include <string>
 #include <vector>
+#include "../include/tree.hpp"
 
 /**
- * @brief the function opens the text file and read the information storing it into a
- * 2d-vector (vector of vectors).
+ * @brief Implementation in read_file.cpp. The function opens the text file and reads 
+ * the information storing it into a 2d-vector (vector of vectors).
  * 
  * @return std::vector<std::vector<int>> 
  */
-std::vector<std::vector<int>> read_file(){
-    int number_of_problems, initial_col, initial_row, destination_col, destination_row; 
-    std::string line;
-    std::vector<std::vector<int>> problems;
-    std::ifstream input_file("../data/problem.txt");
-
-    if(input_file.is_open()){
-        input_file >> number_of_problems;
-        std::vector<int> temp;
-
-        for(int i = 0; i < number_of_problems && std::getline(input_file, line); i++){
-            input_file >> initial_col >> initial_row >> destination_col >> destination_row;
-            temp.push_back(initial_col);
-            temp.push_back(initial_row);
-            temp.push_back(destination_col);
-            temp.push_back(destination_row);
-            problems.push_back(temp);
-            temp.clear();
-        }
-    }
-
-    input_file.close();
-    return problems;
-}
-
+std::vector<std::vector<int>> read_file();
 
 /**
  * @brief 
@@ -56,7 +31,6 @@ std::vector<std::vector<int>> read_file(){
 int main(int argc, char *argv[]){
 
     std::vector<std::vector<int>> problems = read_file();
-
 
     for(int i = 0; i < problems.size(); i++){
         for(int j = 0; j < problems[i].size(); j++)
