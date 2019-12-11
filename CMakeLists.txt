@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.13.4)
+project(COMP415-AI_Project)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+include_directories(include)
+file(GLOB SOURCES "src/*.cpp")
+add_executable(execute_AI ${SOURCES})
