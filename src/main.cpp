@@ -16,7 +16,7 @@
 
 /**
  * @brief the function opens the text file and read the information storing it into a
- *        2d-vector (vector of vectors). Each problem line in its own sub 
+ * 2d-vector (vector of vectors).
  * 
  * @return std::vector<std::vector<int>> 
  */
