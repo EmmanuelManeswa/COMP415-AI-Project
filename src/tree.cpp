@@ -56,6 +56,19 @@ void Tree::create_bombs(){
 }
 
 /**
+ * @brief To check if there are 2 bombs/mines on the same row and column.
+ * 
+ * @return true : If there are bombs/mines on the same row and column.
+ * @return false : If there are no bombs/mines on the same row and column.
+ */
+bool Tree::bombs_verification(){
+    if(bombs[0][0] == bombs[1][0] && bombs[0][1] == bombs[1][1]) return true;
+    if(bombs[0][0] == bombs[2][0] && bombs[0][1] == bombs[2][1]) return true;
+    if(bombs[1][0] == bombs[2][0] && bombs[1][1] == bombs[2][1]) return true;
+    return false;
+}
+
+/**
  * @brief 
  * 
  * @param problem 
@@ -65,7 +78,10 @@ void Tree::create_tree(std::vector<int> problem){
     source[1] = problem[1];
     destination[0] = problem[2];
     destination[1] = problem[3];
-    create_bombs();
+    do{
+        create_bombs();
+    }while(bombs_verification());
+
     std::cout << source[0] << " " << source[1] << " " << destination[0] << " " << destination[1] << std::endl;
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 2; j++)

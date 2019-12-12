@@ -53,6 +53,7 @@ class Tree{
         int bombs[3][2];
         node_ptr new_node();
         void create_bombs();
+        bool bombs_verification();
     public:
         Tree();
         void create_tree(std::vector<int>);
