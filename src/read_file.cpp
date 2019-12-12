@@ -15,8 +15,7 @@
 #include <vector>
 
 /**
- * @brief The function opens the text file and reads the information storing it into a
- * 2d-vector (vector of vectors).
+ * @brief The function opens the text file and reads the information storing it into a 2d-vector (vector of vectors).
  * 
  * @return std::vector<std::vector<int>> 
  */

@@ -14,8 +14,8 @@
 #include "../include/tree.hpp"
 
 /**
- * @brief Implementation in read_file.cpp. The function opens the text file and reads 
- * the information storing it into a 2d-vector (vector of vectors).
+ * @brief Implementation in read_file.cpp. The function opens the text file and reads  the information
+ * storing it into a 2d-vector (vector of vectors).
  * 
  * @return std::vector<std::vector<int>> 
  */

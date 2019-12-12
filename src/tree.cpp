@@ -61,11 +61,63 @@ void Tree::create_bombs(){
  * @return true : If there are bombs/mines on the same row and column.
  * @return false : If there are no bombs/mines on the same row and column.
  */
-bool Tree::bombs_verification(){
+bool Tree::bombs_verification()const{
     if(bombs[0][0] == bombs[1][0] && bombs[0][1] == bombs[1][1]) return true;
     if(bombs[0][0] == bombs[2][0] && bombs[0][1] == bombs[2][1]) return true;
     if(bombs[1][0] == bombs[2][0] && bombs[1][1] == bombs[2][1]) return true;
     return false;
+}
+
+/**
+ * @brief 
+ * 
+ */
+void Tree::create_root(){
+    root = new_node();
+    /**
+     * @brief The following nested loop sets all the squares on the board to white.
+     * 
+     */
+    for(int i = 0; i < ROWS; i++)
+        for(int j = 0; j < COLUMNS; j++)
+            root->board[i][j] = square::white;
+    /**
+     * @brief The following 2 line of code sets up the start and goal position on the.
+     * 
+     */
+    root->board[source[1]][source[0]] = square::yellow; 
+    root->board[destination[1]][destination[0]] = square::red;
+    /**
+     * @brief The following for loop sets up the bombs/mines to their respective squares on the board.
+     * 
+     */
+    for(int i = 0; i < 3; i++)
+        root->board[bombs[i][1]][bombs[i][0]] = square::bomb;
+    /**
+     * @brief The following nested loop sets all the squares in the same columns as the bombs/mines to bomb_columns.
+     * 
+     */
+    for(int i = 0; i < 3; i++)
+        for(int j = 0; j < ROWS; j++)
+            if(root->board[j][bombs[i][0]] != square::bomb)
+                root->board[j][bombs[i][0]] = square::bomb_column;
+    /**
+     * @brief The following nested loop sets all the squares in the same row as the bombs/mines to bomb_rows.
+     * 
+     */
+    for(int i = 0; i < 3; i++)
+        for(int j= 0; j < ROWS; j++){
+            for(int k = 0; k < COLUMNS; k++){
+                if(j != bombs[i][1])
+                    break;
+                if(root->board[j][bombs[i][0]] != square::bomb)
+                    root->board[i][bombs[i][0]] = square::bomb_row;
+            }
+        }
+    /**
+     * @brief Should add possible moves to board.
+     * 
+     */
 }
 
 /**
@@ -81,6 +133,7 @@ void Tree::create_tree(std::vector<int> problem){
     do{
         create_bombs();
     }while(bombs_verification());
+    create_root();
 
     std::cout << source[0] << " " << source[1] << " " << destination[0] << " " << destination[1] << std::endl;
     for(int i = 0; i < 3; i++){

@@ -19,15 +19,17 @@
 #define COLUMNS 10
 
 /**
- * @brief 
+ * @brief The board has ROWS*COLUMNS squares and each square can be in either of the states specified in the enum class.
  * 
  */
-enum class color{
-    white,
-    yellow,
-    blue,
-    red,
-    bomb
+enum class square{
+    yellow, // Initial position.
+    blue, // Possible moves.
+    red, // Goal position.
+    bomb, // Bomb/Mine position.
+    bomb_row, // The row were a bomb/mine is in.
+    bomb_column, // The column were a bomb/mine is in.
+    white // The rest of the unoccupied boxes.
 };
 
 /**
@@ -36,7 +38,7 @@ enum class color{
  */
 class Node{
     public:
-        color board[ROWS][COLUMNS];
+        square board[ROWS][COLUMNS];
         Node *top, *left, *right, *bottom;
         int prev_row, prev_col;
 };
@@ -49,11 +51,12 @@ class Tree{
         typedef class Node node;
         typedef node *node_ptr;
         node_ptr root;
-        int source[2], destination[2];
-        int bombs[3][2];
+        int source[2], destination[2]; // Structure {column,row}.
+        int bombs[3][2]; // Structure { {column, row}, {column, row}, {column, row} }.
         node_ptr new_node();
         void create_bombs();
-        bool bombs_verification();
+        bool bombs_verification()const;
+        void create_root();
     public:
         Tree();
         void create_tree(std::vector<int>);
