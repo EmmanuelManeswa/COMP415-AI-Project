@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/execute_AI.dir/src/main.cpp.o CMakeFiles/execute_AI.dir/src/read_file.cpp.o CMakeFiles/execute_AI.dir/src/tree.cpp.o CMakeFiles/execute_AI.dir/src/write_file.cpp.o  -o execute_AI 

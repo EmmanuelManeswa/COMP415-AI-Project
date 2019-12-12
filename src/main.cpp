@@ -32,11 +32,15 @@ int main(int argc, char *argv[]){
 
     std::vector<std::vector<int>> problems = read_file();
 
-    for(int i = 0; i < problems.size(); i++){
+    Tree test[problems.size()];
+    for(int i = 0; i < problems.size(); i++)
+        test[i].create_tree(problems[i]);
+
+    /*for(int i = 0; i < problems.size(); i++){
         for(int j = 0; j < problems[i].size(); j++)
             std::cout << problems[i][j] << " ";
         std::cout << std::endl;
-    }
+    }*/
 
     return 0;
 }
