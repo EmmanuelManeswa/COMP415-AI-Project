@@ -56,7 +56,7 @@ void Tree::create_bombs(){
 }
 
 /**
- * @brief To check if there are 2 bombs/mines on the same row and column.
+ * @brief To check if there are 2 or 3 bombs/mines on the same row and column.
  * 
  * @return true : If there are bombs/mines on the same row and column.
  * @return false : If there are no bombs/mines on the same row and column.
