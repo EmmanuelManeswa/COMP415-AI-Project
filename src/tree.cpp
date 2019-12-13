@@ -263,9 +263,9 @@ void Tree::create_root(){
  * @param value 
  * @return std::underlying_type<Enumeration>::type 
  */
-template <typename Enumeration>
-auto Tree::as_integer(Enumeration const value)-> typename std::underlying_type<Enumeration>::type{
-    return static_cast<typename std::underlying_type<Enumeration>::type>(value);
+template <typename enum_class>
+auto Tree::as_integer(enum_class const value)-> typename std::underlying_type<enum_class>::type{
+    return static_cast<typename std::underlying_type<enum_class>::type>(value);
 }
 
 /**
