@@ -67,6 +67,8 @@ class Tree{
         void create_root();
     public:
         Tree();
+        template <typename Enumeration>
+        auto as_integer(Enumeration const value)-> typename std::underlying_type<Enumeration>::type;
         void create_tree(std::vector<int>);
 };
 

@@ -237,22 +237,35 @@ void Tree::create_root(){
             for(int k = 0; k < COLUMNS; k++){
                 if(j != bombs[i][1])
                     break;
-                if(root->board[j][bombs[i][0]] != square::bomb)
-                    root->board[i][bombs[i][0]] = square::bomb_row;
+                if(root->board[bombs[i][1]][k] != square::bomb)
+                    root->board[bombs[i][1]][k] = square::bomb_row;
             }
         }
     /**
-     * @brief Should add possible moves to board.
+     * @brief The following 4 conditional if statements calculates and sets the possible moves on the board.
      * 
      */
     if(if_top(root, root->current_row-1, root->current_column))
-        ;
+        root->board[possible_top_move(root, root->current_row-1, root->current_column)][root->current_column] = square::blue; 
     if(if_left(root, root->current_row, root->current_column-1))
-        ;
+        root->board[root->current_row][possible_left_move(root, root->current_row, root->current_column-1)] = square::blue;
     if(if_right(root, root->current_row, root->current_column+1))
-        ;
+        root->board[root->current_row][possible_left_move(root, root->current_row, root->current_column+1)] = square::blue;
     if(if_bottom(root, root->current_row+1, root->current_column))
-        ;
+        root->board[possible_bottom_move(root, root->current_row+1, root->current_column)][root->current_column] = square::blue;
+}
+
+/**
+ * @brief The following function is to explicity convert the enumeration to integer because enum
+ *  classes (scoped enumeration) cannot be implicitly converted.
+ * 
+ * @tparam Enumeration 
+ * @param value 
+ * @return std::underlying_type<Enumeration>::type 
+ */
+template <typename Enumeration>
+auto Tree::as_integer(Enumeration const value)-> typename std::underlying_type<Enumeration>::type{
+    return static_cast<typename std::underlying_type<Enumeration>::type>(value);
 }
 
 /**
@@ -270,10 +283,30 @@ void Tree::create_tree(std::vector<int> problem){
     }while(bombs_verification());
     create_root();
 
-    std::cout << source[0] << " " << source[1] << " " << destination[0] << " " << destination[1] << std::endl;
+    /**
+     * @brief The following lines of codes are tests.
+     * 
+     */
+
+    std::cout << "  CHEAT SHEET." << std::endl;
+    std::cout << "Yellow: " << as_integer(square::yellow) << std::endl;
+    std::cout << "Blue: " << as_integer(square::blue) << std::endl;
+    std::cout << "Red: " << as_integer(square::red) << std::endl;
+    std::cout << "Bomb: " << as_integer(square::bomb) << std::endl;
+    std::cout << "Bomb Row: " << as_integer(square::bomb_row) << std::endl;
+    std::cout << "Bomb Column: " << as_integer(square::bomb_column) << std::endl;
+    std::cout << "White: " << as_integer(square::white) << std::endl << std::endl;
+
+    for(int i = 0; i < ROWS; i++){
+        for(int j = 0; j < COLUMNS; j++)
+            std::cout << "[" << as_integer(root->board[i][j]) << "]" << " ";
+        std::cout << std::endl;
+    }
+
+    /*std::cout << source[0] << " " << source[1] << " " << destination[0] << " " << destination[1] << std::endl;
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 2; j++)
             std::cout << "[" << bombs[i][j] << "]";
         std::cout << std::endl;
-    }
+    }*/
 }
