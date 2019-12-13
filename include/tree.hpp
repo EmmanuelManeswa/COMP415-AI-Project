@@ -29,7 +29,13 @@ enum class square{
     bomb, // Bomb/Mine position.
     bomb_row, // The row were a bomb/mine is in.
     bomb_column, // The column were a bomb/mine is in.
-    white // The rest of the unoccupied boxes.
+    white, // The rest of the unoccupied boxes.
+    /**
+     * @brief The following enum list member is used to specify which states/cells/squares we've visited before like its parent,
+     * grandparents, great-grandparents and ancestors etc. This is to create a loop-free search tree.
+     * 
+     */
+    visited_square
 };
 
 /**
