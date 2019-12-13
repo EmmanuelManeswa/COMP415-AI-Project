@@ -40,7 +40,7 @@ class Node{
     public:
         square board[ROWS][COLUMNS];
         Node *top, *left, *right, *bottom;
-        int prev_row, prev_col;
+        int prev_row, prev_col, current_row, current_column;
 };
 
 /**
@@ -60,6 +60,10 @@ class Tree{
         bool if_left(node_ptr, int, int)const;
         bool if_right(node_ptr, int, int)const;
         bool if_bottom(node_ptr, int, int)const;
+        int possible_top_move(node_ptr, int, int)const;
+        int possible_left_move(node_ptr, int, int)const;
+        int possible_right_move(node_ptr, int, int)const;
+        int possible_bottom_move(node_ptr, int, int)const;
         void create_root();
     public:
         Tree();

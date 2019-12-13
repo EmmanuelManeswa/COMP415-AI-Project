@@ -22,9 +22,9 @@
 Tree::Tree(){ }
 
 /**
- * @brief Create a new node for the tree.
+ * @brief Creates a new node.
  * 
- * @return Tree::node_ptr 
+ * @return Tree::node_ptr : The created node.
  */
 Tree::node_ptr Tree::new_node(){
     node_ptr temp_node = new Node;
@@ -133,6 +133,62 @@ bool Tree::if_bottom(node_ptr move, int row_no, int col_no)const{
 }
 
 /**
+ * @brief Finds the position of the possible move to the top.
+ * 
+ * @param move 
+ * @param row_no 
+ * @param col_no 
+ * @return int : The row number for the possible move.
+ */
+int Tree::possible_top_move(node_ptr move, int row_no, int col_no)const{
+    if(move->board[row_no][col_no] == square::bomb_row)
+        return possible_top_move(move, row_no-1, col_no);
+    return row_no;
+}
+
+/**
+ * @brief Finds the position of the possible move to the left.
+ * 
+ * @param move 
+ * @param row_no 
+ * @param col_no 
+ * @return int : The column number for the possible move.
+ */
+int Tree::possible_left_move(node_ptr move, int row_no, int col_no)const{
+    if(move->board[row_no][col_no] == square::bomb_column)
+        return possible_left_move(move, row_no, col_no-1);
+    return col_no;
+}
+
+/**
+ * @brief Finds the position of the possible move to the right.
+ * 
+ * @param move 
+ * @param row_no 
+ * @param col_no 
+ * @return int : The column number for the possible move
+ */
+int Tree::possible_right_move(node_ptr move, int row_no, int col_no)const{
+    if(move->board[row_no][col_no] == square::bomb_column)
+        return possible_right_move(move, row_no, col_no+1);
+    return col_no;
+}
+
+/**
+ * @brief Finds the position of the possible move the the bottom.
+ * 
+ * @param move 
+ * @param row_no 
+ * @param col_no 
+ * @return int : The row number for the possible move.
+ */
+int Tree::possible_bottom_move(node_ptr move, int row_no, int col_no)const{
+    if(move->board[row_no][col_no] == square::bomb_row)
+        return possible_bottom_move(move, row_no+1, col_no);
+    return row_no;
+}
+
+/**
  * @brief 
  * 
  */
@@ -151,6 +207,13 @@ void Tree::create_root(){
      */
     root->board[source[1]][source[0]] = square::yellow; 
     root->board[destination[1]][destination[0]] = square::red;
+    /**
+     * @brief The following 2 line sets the current position of the knight on the board to avoid unnecessary
+     * traversals to know were it is
+     * 
+     */
+    root->current_row = source[1];
+    root->current_column = source[0];
     /**
      * @brief The following for loop sets up the bombs/mines to their respective squares on the board.
      * 
@@ -182,7 +245,14 @@ void Tree::create_root(){
      * @brief Should add possible moves to board.
      * 
      */
-    
+    if(if_top(root, root->current_row-1, root->current_column))
+        ;
+    if(if_left(root, root->current_row, root->current_column-1))
+        ;
+    if(if_right(root, root->current_row, root->current_column+1))
+        ;
+    if(if_bottom(root, root->current_row+1, root->current_column))
+        ;
 }
 
 /**
