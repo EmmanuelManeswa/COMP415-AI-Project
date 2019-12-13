@@ -56,6 +56,10 @@ class Tree{
         node_ptr new_node();
         void create_bombs();
         bool bombs_verification()const;
+        bool if_top(node_ptr, int, int)const;
+        bool if_left(node_ptr, int, int)const;
+        bool if_right(node_ptr, int, int)const;
+        bool if_bottom(node_ptr, int, int)const;
         void create_root();
     public:
         Tree();

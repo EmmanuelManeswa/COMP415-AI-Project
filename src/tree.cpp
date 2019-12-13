@@ -69,6 +69,70 @@ bool Tree::bombs_verification()const{
 }
 
 /**
+ * @brief The following tests if there is a possible move to the top.
+ * 
+ * @param move 
+ * @param row_no 
+ * @param col_no 
+ * @return true : If there is a possible move.
+ * @return false : If there is no possible move.
+ */
+bool Tree::if_top(node_ptr move, int row_no, int col_no)const{
+    if(row_no < 0) return false;
+    if(move->board[row_no][col_no] == square::bomb_row)
+        return if_top(move, row_no-1, col_no);
+    return true;
+}
+
+/**
+ * @brief The following function tests if there is a possible move to the left.
+ * 
+ * @param move 
+ * @param row_no 
+ * @param col_no 
+ * @return true : If there is a possible move.
+ * @return false : If there is no possible move.
+ */
+bool Tree::if_left(node_ptr move, int row_no, int col_no)const{
+    if(col_no < 0) return false;
+    if(move->board[row_no][col_no] == square::bomb_column)
+        return if_left(move, row_no, col_no-1);
+    return true;
+}
+
+/**
+ * @brief The following function tests if there is a possible move to the right.
+ * 
+ * @param move 
+ * @param row_no 
+ * @param col_no 
+ * @return true : If there is a possible move.
+ * @return false :If there is no possible move.
+ */
+bool Tree::if_right(node_ptr move, int row_no, int col_no)const{
+    if(col_no >= COLUMNS) return false;
+    if(move->board[row_no][col_no] == square::bomb_column)
+        return if_right(move, row_no, col_no+1);
+    return true;
+}
+
+/**
+ * @brief The following function tests if there is a possible move to the bottom.
+ * 
+ * @param move 
+ * @param row_no 
+ * @param col_no 
+ * @return true : If there is a possible move.
+ * @return false : If there is no possible move.
+ */
+bool Tree::if_bottom(node_ptr move, int row_no, int col_no)const{
+    if(row_no >= ROWS) return false;
+    if(move->board[row_no][col_no] == square::bomb_row)
+        return if_bottom(move, row_no+1, col_no);
+    return true;
+}
+
+/**
  * @brief 
  * 
  */
@@ -118,6 +182,7 @@ void Tree::create_root(){
      * @brief Should add possible moves to board.
      * 
      */
+    
 }
 
 /**
