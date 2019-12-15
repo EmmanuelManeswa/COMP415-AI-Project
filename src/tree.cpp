@@ -281,7 +281,7 @@ void Tree::create_root(){
 }
 
 /**
- * @brief The following function create the branches of the tree.
+ * @brief The following function creates the branches of the tree.
  * 
  * @param branch 
  * @return Tree::node_ptr 
@@ -307,35 +307,34 @@ Tree::node_ptr Tree::create_branches(node_ptr branch){
 Tree::node_ptr Tree::move_top(node_ptr branch){
     if(branch->top == nullptr)
         branch->top = new_node();
-    node_ptr temp = branch->top;
     for(int i = 0; i < ROWS; i++)
         for(int j = 0; j < COLUMNS; j++){
             if(branch->board[i][j] == square::blue && i < branch->current_row){
-                temp->board[i][j] = square::yellow;
-                temp->current_row = i;
-                temp->current_column = j;
-                temp->prev_row = branch->current_row;
-                temp->prev_col = branch->current_column;
-                temp->board[temp->prev_row][temp->prev_col] = square::visited_square;
+                branch->top->board[i][j] = square::yellow;
+                branch->top->current_row = i;
+                branch->top->current_column = j;
+                branch->top->prev_row = branch->current_row;
+                branch->top->prev_col = branch->current_column;
+                branch->top->board[branch->top->prev_row][branch->top->prev_col] = square::visited_square;
             }
             else if(branch->board[i][j] == square::blue || branch->board[i][j] == square::white)
-                temp->board[i][j] = square::white;
+                branch->top->board[i][j] = square::white;
             else if(branch->board[i][j] == square::bomb)
-                temp->board[i][j] = square::bomb;
+                branch->top->board[i][j] = square::bomb;
             else if(branch->board[i][j] == square::bomb_row)
-                temp->board[i][j] = square::bomb_row;
+                branch->top->board[i][j] = square::bomb_row;
             else if(branch->board[i][j] == square::bomb_column)
-                temp->board[i][j] = square::bomb_column;
+                branch->top->board[i][j] = square::bomb_column;
             else if(branch->board[i][j] == square::visited_square)
-                temp->board[i][j] = square::visited_square;
+                branch->top->board[i][j] = square::visited_square;
             else if(branch->board[i][j] == square::red)
-                temp->board[i][j] = square::red;
+                branch->top->board[i][j] = square::red;
         }
-    if(is_goal(temp))
-        return temp;
-    temp = set_possible_moves(temp);
-    temp = create_branches(temp);
-    return temp;
+    if(is_goal(branch->top))
+        return branch->top;
+    branch->top = set_possible_moves(branch->top);
+    branch->top = create_branches(branch->top);
+    return branch->top;
 }
 
 /**
@@ -347,6 +346,34 @@ Tree::node_ptr Tree::move_top(node_ptr branch){
 Tree::node_ptr Tree::move_left(node_ptr branch){
     if(branch->left == nullptr)
         branch->left = new_node();
+    for(int i = 0; i < ROWS; i++)
+        for(int j = 0; j < COLUMNS; j++){
+            if(branch->board[i][j] == square::blue && j < branch->current_column){
+                branch->left->board[i][j] = square::yellow;
+                branch->left->current_row = i;
+                branch->left->current_column = j;
+                branch->left->prev_row = branch->current_row;
+                branch->left->prev_col = branch->current_column;
+                branch->left->board[branch->left->prev_row][branch->left->prev_col] = square::visited_square;
+            }
+            else if(branch->board[i][j] == square::blue || branch->board[i][j] == square::white)
+                branch->left->board[i][j] = square::white;
+            else if(branch->board[i][j] == square::bomb)
+                branch->left->board[i][j] = square::bomb;
+            else if(branch->board[i][j] == square::bomb_row)
+                branch->left->board[i][j] = square::bomb_row;
+            else if(branch->board[i][j] == square::bomb_column)
+                branch->left->board[i][j] = square::bomb_column;
+            else if(branch->board[i][j] == square::visited_square)
+                branch->left->board[i][j] = square::visited_square;
+            else if(branch->board[i][j] == square::red)
+                branch->left->board[i][j] = square::red;
+        }
+    if(is_goal(branch->left))
+        return branch->left;
+    branch->left = set_possible_moves(branch->left);
+    branch->left = create_branches(branch->left);
+    return branch->left;
 }
 
 /**
@@ -358,6 +385,34 @@ Tree::node_ptr Tree::move_left(node_ptr branch){
 Tree::node_ptr Tree::move_right(node_ptr branch){
     if(branch->right == nullptr)
         branch->right = new_node();
+    for(int i = 0; i < ROWS; i++)
+        for(int j = 0; j < COLUMNS; j++){
+            if(branch->board[i][j] == square::blue && j > branch->current_column){
+                branch->right->board[i][j] = square::yellow;
+                branch->right->current_row = i;
+                branch->right->current_column = j;
+                branch->right->prev_row = branch->current_row;
+                branch->right->prev_col = branch->current_column;
+                branch->right->board[branch->right->prev_row][branch->right->prev_col] = square::visited_square;
+            }
+            else if(branch->board[i][j] == square::blue || branch->board[i][j] == square::white)
+                branch->right->board[i][j] = square::white;
+            else if(branch->board[i][j] == square::bomb)
+                branch->right->board[i][j] = square::bomb;
+            else if(branch->board[i][j] == square::bomb_row)
+                branch->right->board[i][j] = square::bomb_row;
+            else if(branch->board[i][j] == square::bomb_column)
+                branch->right->board[i][j] = square::bomb_column;
+            else if(branch->board[i][j] == square::visited_square)
+                branch->right->board[i][j] = square::visited_square;
+            else if(branch->board[i][j] == square::red)
+                branch->right->board[i][j] = square::red;
+        }
+    if(is_goal(branch->right))
+        return branch->right;
+    branch->right = set_possible_moves(branch->right);
+    branch->right = create_branches(branch->right);
+    return branch->right;
 }
 
 /**
@@ -369,6 +424,34 @@ Tree::node_ptr Tree::move_right(node_ptr branch){
 Tree::node_ptr Tree::move_bottom(node_ptr branch){
     if(branch->bottom == nullptr)
         branch->bottom = new_node();
+    for(int i = 0; i < ROWS; i++)
+        for(int j = 0; j < COLUMNS; j++){
+            if(branch->board[i][j] == square::blue && i > branch->current_row){
+                branch->bottom->board[i][j] = square::yellow;
+                branch->bottom->current_row = i;
+                branch->bottom->current_column = j;
+                branch->bottom->prev_row = branch->current_row;
+                branch->bottom->prev_col = branch->current_column;
+                branch->bottom->board[branch->bottom->prev_row][branch->bottom->prev_col] = square::visited_square;
+            }
+            else if(branch->board[i][j] == square::blue || branch->board[i][j] == square::white)
+                branch->bottom->board[i][j] = square::white;
+            else if(branch->board[i][j] == square::bomb)
+                branch->bottom->board[i][j] = square::bomb;
+            else if(branch->board[i][j] == square::bomb_row)
+                branch->bottom->board[i][j] = square::bomb_row;
+            else if(branch->board[i][j] == square::bomb_column)
+                branch->bottom->board[i][j] = square::bomb_column;
+            else if(branch->board[i][j] == square::visited_square)
+                branch->bottom->board[i][j] = square::visited_square;
+            else if(branch->board[i][j] == square::red)
+                branch->bottom->board[i][j] = square::red;
+        }
+    if(is_goal(branch->bottom))
+        return branch->bottom;
+    branch->bottom = set_possible_moves(branch->bottom);
+    branch->bottom = create_branches(branch->bottom);
+    return branch->bottom;
 }
 
 /**
