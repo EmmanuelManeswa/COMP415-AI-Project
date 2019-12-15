@@ -17,6 +17,7 @@
 
 #define ROWS 10
 #define COLUMNS 10
+#define MAX 10000
 
 /**
  * @brief The board has ROWS*COLUMNS squares and each square can be in either of the states specified in the enum class.

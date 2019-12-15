@@ -497,11 +497,20 @@ void Tree::create_tree(std::vector<int> problem){
     std::cout << "Bomb: " << as_integer(square::bomb) << std::endl;
     std::cout << "Bomb Row: " << as_integer(square::bomb_row) << std::endl;
     std::cout << "Bomb Column: " << as_integer(square::bomb_column) << std::endl;
-    std::cout << "White: " << as_integer(square::white) << std::endl << std::endl;
+    std::cout << "White: " << as_integer(square::white) << std::endl;
+    std::cout << "Visited: " << as_integer(square::visited_square) << std::endl << std::endl;
 
     for(int i = 0; i < ROWS; i++){
         for(int j = 0; j < COLUMNS; j++)
             std::cout << "[" << as_integer(root->board[i][j]) << "]" << " ";
+        std::cout << std::endl;
+    }
+    
+    std::cout << std::endl;
+
+    for(int i = 0; i < ROWS; i++){
+        for(int j = 0; j < COLUMNS; j++)
+            std::cout << "[" << as_integer(root->top->board[i][j]) << "]" << " ";
         std::cout << std::endl;
     }
 
