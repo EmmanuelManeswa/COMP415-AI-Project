@@ -12,14 +12,6 @@ iostream
 vector
 -
 
-/home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/src/main.cpp
-iostream
--
-vector
--
-../include/tree.hpp
-/home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/include/tree.hpp
-
 /home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/src/tree.cpp
 iostream
 -

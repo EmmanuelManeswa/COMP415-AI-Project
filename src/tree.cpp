@@ -133,6 +133,17 @@ bool Tree::if_bottom(node_ptr move, int row_no, int col_no)const{
 }
 
 /**
+ * @brief The following function tests if goal is reached.
+ * 
+ * @param curr_node 
+ * @return true : If goal is reached.
+ * @return false : If goal not yet reached.
+ */
+bool Tree::is_goal(node_ptr curr_node)const{
+    return curr_node->current_row == destination[1] && curr_node->current_column == destination[0] ? true : false;
+}
+
+/**
  * @brief Finds the position of the possible move to the top.
  * 
  * @param move 
@@ -202,14 +213,14 @@ void Tree::create_root(){
         for(int j = 0; j < COLUMNS; j++)
             root->board[i][j] = square::white;
     /**
-     * @brief The following 2 line of code sets up the start and goal position on the.
+     * @brief The following 2 line of code sets up the start and goal position on the board.
      * 
      */
     root->board[source[1]][source[0]] = square::yellow; 
     root->board[destination[1]][destination[0]] = square::red;
     /**
      * @brief The following 2 line sets the current position of the knight on the board to avoid unnecessary
-     * traversals to know were it is
+     * traversals to know were it is.
      * 
      */
     root->current_row = source[1];
@@ -241,18 +252,21 @@ void Tree::create_root(){
                     root->board[bombs[i][1]][k] = square::bomb_row;
             }
         }
-    /**
-     * @brief The following 4 conditional if statements calculates and sets the possible moves on the board.
-     * 
-     */
-    if(if_top(root, root->current_row-1, root->current_column))
-        root->board[possible_top_move(root, root->current_row-1, root->current_column)][root->current_column] = square::blue; 
-    if(if_left(root, root->current_row, root->current_column-1))
-        root->board[root->current_row][possible_left_move(root, root->current_row, root->current_column-1)] = square::blue;
-    if(if_right(root, root->current_row, root->current_column+1))
-        root->board[root->current_row][possible_left_move(root, root->current_row, root->current_column+1)] = square::blue;
-    if(if_bottom(root, root->current_row+1, root->current_column))
-        root->board[possible_bottom_move(root, root->current_row+1, root->current_column)][root->current_column] = square::blue;
+
+    if(!is_goal(root)){
+        /**
+         * @brief The following 4 conditional if statements calculates and sets the possible moves on the board.
+         * 
+         */
+        if(if_top(root, root->current_row-1, root->current_column))
+            root->board[possible_top_move(root, root->current_row-1, root->current_column)][root->current_column] = square::blue; 
+        if(if_left(root, root->current_row, root->current_column-1))
+            root->board[root->current_row][possible_left_move(root, root->current_row, root->current_column-1)] = square::blue;
+        if(if_right(root, root->current_row, root->current_column+1))
+            root->board[root->current_row][possible_right_move(root, root->current_row, root->current_column+1)] = square::blue;
+        if(if_bottom(root, root->current_row+1, root->current_column))
+            root->board[possible_bottom_move(root, root->current_row+1, root->current_column)][root->current_column] = square::blue;
+    }
 }
 
 /**

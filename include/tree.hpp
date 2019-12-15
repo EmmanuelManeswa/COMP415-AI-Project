@@ -66,6 +66,7 @@ class Tree{
         bool if_left(node_ptr, int, int)const;
         bool if_right(node_ptr, int, int)const;
         bool if_bottom(node_ptr, int, int)const;
+        bool is_goal(node_ptr)const;
         int possible_top_move(node_ptr, int, int)const;
         int possible_left_move(node_ptr, int, int)const;
         int possible_right_move(node_ptr, int, int)const;
