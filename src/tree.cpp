@@ -75,10 +75,11 @@ bool Tree::bombs_verification()const{
  * @param row_no 
  * @param col_no 
  * @return true : If there is a possible move.
- * @return false : If there is no possible move.
+ * @return false : If there is no possible move and the possible move has has been visited before.
  */
 bool Tree::if_top(node_ptr move, int row_no, int col_no)const{
     if(row_no < 0) return false;
+    if(move->board[row_no][col_no] == square::visited_square) return false;
     if(move->board[row_no][col_no] == square::bomb_row)
         return if_top(move, row_no-1, col_no);
     return true;
@@ -91,10 +92,11 @@ bool Tree::if_top(node_ptr move, int row_no, int col_no)const{
  * @param row_no 
  * @param col_no 
  * @return true : If there is a possible move.
- * @return false : If there is no possible move.
+ * @return false : If there is no possible move and the possible move has has been visited before.
  */
 bool Tree::if_left(node_ptr move, int row_no, int col_no)const{
     if(col_no < 0) return false;
+    if(move->board[row_no][col_no] == square::visited_square) return false;
     if(move->board[row_no][col_no] == square::bomb_column)
         return if_left(move, row_no, col_no-1);
     return true;
@@ -107,10 +109,11 @@ bool Tree::if_left(node_ptr move, int row_no, int col_no)const{
  * @param row_no 
  * @param col_no 
  * @return true : If there is a possible move.
- * @return false :If there is no possible move.
+ * @return false : If there is no possible move and the possible move has has been visited before.
  */
 bool Tree::if_right(node_ptr move, int row_no, int col_no)const{
     if(col_no >= COLUMNS) return false;
+    if(move->board[row_no][col_no] == square::visited_square) return false;
     if(move->board[row_no][col_no] == square::bomb_column)
         return if_right(move, row_no, col_no+1);
     return true;
@@ -123,10 +126,11 @@ bool Tree::if_right(node_ptr move, int row_no, int col_no)const{
  * @param row_no 
  * @param col_no 
  * @return true : If there is a possible move.
- * @return false : If there is no possible move.
+ * @return false : If there is no possible move and the possible move has has been visited before.
  */
 bool Tree::if_bottom(node_ptr move, int row_no, int col_no)const{
     if(row_no >= ROWS) return false;
+    if(move->board[row_no][col_no] == square::visited_square) return false;
     if(move->board[row_no][col_no] == square::bomb_row)
         return if_bottom(move, row_no+1, col_no);
     return true;
@@ -200,6 +204,24 @@ int Tree::possible_bottom_move(node_ptr move, int row_no, int col_no)const{
 }
 
 /**
+ * @brief The following function sets the possible moves on the board
+ * 
+ * @param move 
+ * @return Tree::node_ptr 
+ */
+Tree::node_ptr Tree::set_possible_moves(node_ptr move){
+    if(if_top(move, move->current_row-1, move->current_column))
+        move->board[possible_top_move(move, move->current_row-1, move->current_column)][move->current_column] = square::blue; 
+    if(if_left(move, move->current_row, move->current_column-1))
+        move->board[move->current_row][possible_left_move(move, move->current_row, move->current_column-1)] = square::blue;
+    if(if_right(move, move->current_row, move->current_column+1))
+        move->board[move->current_row][possible_right_move(move, move->current_row, move->current_column+1)] = square::blue;
+    if(if_bottom(move, move->current_row+1, move->current_column))
+        move->board[possible_bottom_move(move, move->current_row+1, move->current_column)][move->current_column] = square::blue;
+    return move;
+}
+
+/**
  * @brief 
  * 
  */
@@ -253,51 +275,100 @@ void Tree::create_root(){
             }
         }
 
-    if(!is_goal(root)){
-        /**
-         * @brief The following 4 conditional if statements calculates and sets the possible moves on the board.
-         * 
-         */
-        if(if_top(root, root->current_row-1, root->current_column))
-            root->board[possible_top_move(root, root->current_row-1, root->current_column)][root->current_column] = square::blue; 
-        if(if_left(root, root->current_row, root->current_column-1))
-            root->board[root->current_row][possible_left_move(root, root->current_row, root->current_column-1)] = square::blue;
-        if(if_right(root, root->current_row, root->current_column+1))
-            root->board[root->current_row][possible_right_move(root, root->current_row, root->current_column+1)] = square::blue;
-        if(if_bottom(root, root->current_row+1, root->current_column))
-            root->board[possible_bottom_move(root, root->current_row+1, root->current_column)][root->current_column] = square::blue;
-    }
-}
-
-Tree::node_ptr Tree::move_top(node_ptr branch){
-
-}
-
-Tree::node_ptr Tree::move_left(node_ptr branch){
-
-}
-
-Tree::node_ptr Tree::move_right(node_ptr branch){
-
-}
-
-Tree::node_ptr Tree::move_bottom(node_ptr branch){
+    if(!is_goal(root))
+        root = set_possible_moves(root);
 
 }
 
 /**
- * @brief The following function creates the branches of the tree.
+ * @brief The following function create the branches of the tree.
  * 
+ * @param branch 
+ * @return Tree::node_ptr 
  */
-void Tree::create_branches(){
-    if(if_top(root, root->current_row-1, root->current_column))
-        root->top = move_top(root);
-    if(if_left(root, root->current_row, root->current_column-1))
-        root->left = move_left(root);
-    if(if_right(root, root->current_row, root->current_column+1))
-        root->right = move_right(root);
-    if(if_bottom(root, root->current_row+1, root->current_column))
-        root->bottom = move_bottom(root);
+Tree::node_ptr Tree::create_branches(node_ptr branch){
+    if(if_top(branch, branch->current_row-1, branch->current_column))
+        branch->top = move_top(branch);
+    if(if_left(branch, branch->current_row, branch->current_column-1))
+        branch->left = move_left(branch);
+    if(if_right(branch, branch->current_row, branch->current_column+1))
+        branch->right = move_right(branch);
+    if(if_bottom(branch, branch->current_row+1, branch->current_column))
+        branch->bottom = move_bottom(branch);
+    return branch;
+}
+
+/**
+ * @brief The following function creates a branch of the tree for the move of going top.
+ * 
+ * @param branch 
+ * @return Tree::node_ptr 
+ */
+Tree::node_ptr Tree::move_top(node_ptr branch){
+    if(branch->top == nullptr)
+        branch->top = new_node();
+    node_ptr temp = branch->top;
+    for(int i = 0; i < ROWS; i++)
+        for(int j = 0; j < COLUMNS; j++){
+            if(branch->board[i][j] == square::blue && i < branch->current_row){
+                temp->board[i][j] = square::yellow;
+                temp->current_row = i;
+                temp->current_column = j;
+                temp->prev_row = branch->current_row;
+                temp->prev_col = branch->current_column;
+                temp->board[temp->prev_row][temp->prev_col] = square::visited_square;
+            }
+            else if(branch->board[i][j] == square::blue || branch->board[i][j] == square::white)
+                temp->board[i][j] = square::white;
+            else if(branch->board[i][j] == square::bomb)
+                temp->board[i][j] = square::bomb;
+            else if(branch->board[i][j] == square::bomb_row)
+                temp->board[i][j] = square::bomb_row;
+            else if(branch->board[i][j] == square::bomb_column)
+                temp->board[i][j] = square::bomb_column;
+            else if(branch->board[i][j] == square::visited_square)
+                temp->board[i][j] = square::visited_square;
+            else if(branch->board[i][j] == square::red)
+                temp->board[i][j] = square::red;
+        }
+    if(is_goal(temp))
+        return temp;
+    temp = set_possible_moves(temp);
+    temp = create_branches(temp);
+    return temp;
+}
+
+/**
+ * @brief The following function creates a branch of the tree for the move of going left.
+ * 
+ * @param branch 
+ * @return Tree::node_ptr 
+ */
+Tree::node_ptr Tree::move_left(node_ptr branch){
+    if(branch->left == nullptr)
+        branch->left = new_node();
+}
+
+/**
+ * @brief The following function creates a branch of the tree for the move of going right.
+ * 
+ * @param branch 
+ * @return Tree::node_ptr 
+ */
+Tree::node_ptr Tree::move_right(node_ptr branch){
+    if(branch->right == nullptr)
+        branch->right = new_node();
+}
+
+/**
+ * @brief The following function creates a branch of the tree for the move of going bottom.
+ * 
+ * @param branch 
+ * @return Tree::node_ptr 
+ */
+Tree::node_ptr Tree::move_bottom(node_ptr branch){
+    if(branch->bottom == nullptr)
+        branch->bottom = new_node();
 }
 
 /**
@@ -328,7 +399,7 @@ void Tree::create_tree(std::vector<int> problem){
     }while(bombs_verification());
     create_root();
     if(!is_goal(root)){
-        create_branches();
+        root = create_branches(root);
     }
 
     /**

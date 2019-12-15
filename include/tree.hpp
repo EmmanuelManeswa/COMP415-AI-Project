@@ -71,12 +71,13 @@ class Tree{
         int possible_left_move(node_ptr, int, int)const;
         int possible_right_move(node_ptr, int, int)const;
         int possible_bottom_move(node_ptr, int, int)const;
+        node_ptr set_possible_moves(node_ptr);
         void create_root();
+        node_ptr create_branches(node_ptr);
         node_ptr move_top(node_ptr);
         node_ptr move_left(node_ptr);
         node_ptr move_right(node_ptr);
         node_ptr move_bottom(node_ptr);
-        void create_branches();
     public:
         Tree();
         template <typename enum_class>
