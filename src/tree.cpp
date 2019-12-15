@@ -269,6 +269,37 @@ void Tree::create_root(){
     }
 }
 
+Tree::node_ptr Tree::move_top(node_ptr branch){
+
+}
+
+Tree::node_ptr Tree::move_left(node_ptr branch){
+
+}
+
+Tree::node_ptr Tree::move_right(node_ptr branch){
+
+}
+
+Tree::node_ptr Tree::move_bottom(node_ptr branch){
+
+}
+
+/**
+ * @brief The following function creates the branches of the tree.
+ * 
+ */
+void Tree::create_branches(){
+    if(if_top(root, root->current_row-1, root->current_column))
+        root->top = move_top(root);
+    if(if_left(root, root->current_row, root->current_column-1))
+        root->left = move_left(root);
+    if(if_right(root, root->current_row, root->current_column+1))
+        root->right = move_right(root);
+    if(if_bottom(root, root->current_row+1, root->current_column))
+        root->bottom = move_bottom(root);
+}
+
 /**
  * @brief The following function is to explicity convert the enumeration to integer because enum
  *  classes (scoped enumeration) cannot be implicitly converted.
@@ -296,6 +327,9 @@ void Tree::create_tree(std::vector<int> problem){
         create_bombs();
     }while(bombs_verification());
     create_root();
+    if(!is_goal(root)){
+        create_branches();
+    }
 
     /**
      * @brief The following lines of codes are tests.
