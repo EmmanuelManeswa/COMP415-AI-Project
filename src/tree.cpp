@@ -247,6 +247,8 @@ void Tree::create_root(){
      */
     root->current_row = source[1];
     root->current_column = source[0];
+
+    root->max = 0;
     /**
      * @brief The following for loop sets up the bombs/mines to their respective squares on the board.
      * 
@@ -313,6 +315,7 @@ Tree::node_ptr Tree::move_top(node_ptr branch){
                 branch->top->board[i][j] = square::yellow;
                 branch->top->current_row = i;
                 branch->top->current_column = j;
+                branch->top->max = (branch->max + 1);
                 branch->top->prev_row = branch->current_row;
                 branch->top->prev_col = branch->current_column;
                 branch->top->board[branch->top->prev_row][branch->top->prev_col] = square::visited_square;
@@ -331,6 +334,8 @@ Tree::node_ptr Tree::move_top(node_ptr branch){
                 branch->top->board[i][j] = square::red;
         }
     if(is_goal(branch->top))
+        return branch->top;
+    if(branch->top->max == MAX)
         return branch->top;
     branch->top = set_possible_moves(branch->top);
     branch->top = create_branches(branch->top);
@@ -352,6 +357,7 @@ Tree::node_ptr Tree::move_left(node_ptr branch){
                 branch->left->board[i][j] = square::yellow;
                 branch->left->current_row = i;
                 branch->left->current_column = j;
+                branch->left->max = (branch->max + 1);
                 branch->left->prev_row = branch->current_row;
                 branch->left->prev_col = branch->current_column;
                 branch->left->board[branch->left->prev_row][branch->left->prev_col] = square::visited_square;
@@ -370,6 +376,8 @@ Tree::node_ptr Tree::move_left(node_ptr branch){
                 branch->left->board[i][j] = square::red;
         }
     if(is_goal(branch->left))
+        return branch->left;
+    if(branch->left->max == MAX)
         return branch->left;
     branch->left = set_possible_moves(branch->left);
     branch->left = create_branches(branch->left);
@@ -391,6 +399,7 @@ Tree::node_ptr Tree::move_right(node_ptr branch){
                 branch->right->board[i][j] = square::yellow;
                 branch->right->current_row = i;
                 branch->right->current_column = j;
+                branch->right->max = (branch->max + 1);
                 branch->right->prev_row = branch->current_row;
                 branch->right->prev_col = branch->current_column;
                 branch->right->board[branch->right->prev_row][branch->right->prev_col] = square::visited_square;
@@ -409,6 +418,8 @@ Tree::node_ptr Tree::move_right(node_ptr branch){
                 branch->right->board[i][j] = square::red;
         }
     if(is_goal(branch->right))
+        return branch->right;
+    if(branch->right->max == MAX)
         return branch->right;
     branch->right = set_possible_moves(branch->right);
     branch->right = create_branches(branch->right);
@@ -430,6 +441,7 @@ Tree::node_ptr Tree::move_bottom(node_ptr branch){
                 branch->bottom->board[i][j] = square::yellow;
                 branch->bottom->current_row = i;
                 branch->bottom->current_column = j;
+                branch->bottom->max = (branch->max + 1);
                 branch->bottom->prev_row = branch->current_row;
                 branch->bottom->prev_col = branch->current_column;
                 branch->bottom->board[branch->bottom->prev_row][branch->bottom->prev_col] = square::visited_square;
@@ -448,6 +460,8 @@ Tree::node_ptr Tree::move_bottom(node_ptr branch){
                 branch->bottom->board[i][j] = square::red;
         }
     if(is_goal(branch->bottom))
+        return branch->bottom;
+    if(branch->bottom->max == MAX)
         return branch->bottom;
     branch->bottom = set_possible_moves(branch->bottom);
     branch->bottom = create_branches(branch->bottom);
@@ -513,6 +527,31 @@ void Tree::create_tree(std::vector<int> problem){
             std::cout << "[" << as_integer(root->top->board[i][j]) << "]" << " ";
         std::cout << std::endl;
     }
+
+    std::cout << std::endl;
+
+    for(int i = 0; i < ROWS; i++){
+        for(int j = 0; j < COLUMNS; j++)
+            std::cout << "[" << as_integer(root->left->board[i][j]) << "]" << " ";
+        std::cout << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    for(int i = 0; i < ROWS; i++){
+        for(int j = 0; j < COLUMNS; j++)
+            std::cout << "[" << as_integer(root->right->board[i][j]) << "]" << " ";
+        std::cout << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    for(int i = 0; i < ROWS; i++){
+        for(int j = 0; j < COLUMNS; j++)
+            std::cout << "[" << as_integer(root->bottom->board[i][j]) << "]" << " ";
+        std::cout << std::endl;
+    }
+
 
     /*std::cout << source[0] << " " << source[1] << " " << destination[0] << " " << destination[1] << std::endl;
     for(int i = 0; i < 3; i++){
