@@ -17,7 +17,6 @@
 
 #define ROWS 10
 #define COLUMNS 10
-#define MAX 17 // maximum depth of tree to avoid it from being killed.
 
 /**
  * @brief The board has ROWS*COLUMNS squares and each square can be in either of the states specified in the enum class.
@@ -48,7 +47,6 @@ class Node{
         square board[ROWS][COLUMNS];
         Node *top, *left, *right, *bottom;
         int prev_row, prev_col, current_row, current_column;
-        int max; // stores current depth of the node.
 };
 
 /**
