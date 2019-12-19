@@ -1,7 +1,7 @@
 /**
  * @file tree.cpp
  * @author Emmanuel Maneswa (emmanuelmaneswa@gmail.com)
- * @brief Class implementations.
+ * @brief Implementations of the Tree class (../include/tree.hpp).
  * @version 0.1
  * @date 2019-12-11
  * 
@@ -440,15 +440,23 @@ Tree::node_ptr Tree::move_bottom(node_ptr branch){
 }
 
 /**
- * @brief 
+ * @brief The following function searches for the path to destination using dfs algorithm. Inorder to utilize memory
+ * the algorithm frees/deletes the nodes that has already been searched and do not have a link to the path. It uses 
+ * a cutoff depth of 14 which is the maximum optimal number of moves from 2 furthest points eg ([0,9] and [9,0]).
  * 
  * @param branch 
  */
 void Tree::dfs_algorithm(node_ptr branch){
     path.push(branch);
     if(!is_goal(branch) && branch->depth <= CUTOFF_DEPTH){
+        //node_ptr temp = stack.top();
         stack.pop();
         if(branch->depth == CUTOFF_DEPTH){
+            while(path.top()->depth > stack.top()->depth){
+                path.pop();
+                delete branch;
+                branch = nullptr;
+            }
             path.pop();
             delete branch;
             branch = nullptr;
@@ -463,11 +471,6 @@ void Tree::dfs_algorithm(node_ptr branch){
                 branch->right = move_right(branch);
             if(if_bottom(branch, branch->current_row+1, branch->current_column))
                 branch->bottom = move_bottom(branch);
-
-            if(branch->top != nullptr || branch->left != nullptr || branch->right != nullptr || branch->bottom != nullptr){
-                parent.push(branch);
-            }
-            
             if(branch->bottom != nullptr) stack.push(branch->bottom);
             if(branch->right != nullptr) stack.push(branch->right);
             if(branch->left != nullptr) stack.push(branch->left);
@@ -477,7 +480,11 @@ void Tree::dfs_algorithm(node_ptr branch){
                 delete branch;
                 branch = nullptr;
             }
-            //if()
+            while(path.top()->depth > stack.top()->depth){
+                path.pop();
+                delete branch;
+                branch = nullptr;
+            }
             if(!stack.empty()) dfs_algorithm(stack.top());
         }
     }
@@ -487,7 +494,7 @@ void Tree::dfs_algorithm(node_ptr branch){
 }
 
 /**
- * @brief 
+ * @brief The following function is the overloaded function of the dsw_algorithm this is were the algorithm actually starts from.
  * 
  */
 void Tree::dfs_algorithm(){
@@ -538,7 +545,7 @@ void Tree::create_tree(std::vector<int> problem){
     std::cout << "Bomb Column: " << as_integer(square::bomb_column) << std::endl;
     std::cout << "White: " << as_integer(square::white) << std::endl;
     std::cout << "Visited: " << as_integer(square::visited_square) << std::endl;
-    std::cout << "Moves: " << path.size() << std::endl << std::endl;
+    std::cout << "Moves: " << path.size()-1 << std::endl << std::endl;
 
     while(!path.empty()){
         node_ptr temp = path.top();

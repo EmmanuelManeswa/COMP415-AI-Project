@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @author Emmanuel Maneswa (emmanuelmaneswa@gmail.com)
- * @brief 
+ * @brief Execution of the program starts here in the main function.
  * @version 0.1
  * @date 2019-12-11
  * 
@@ -28,7 +28,7 @@ std::vector<std::vector<int>> read_file();
  * @param argv 
  * @return int 
  */
-int main(int argc, char *argv[]){
+int main(void){
 
     std::vector<std::vector<int>> problems = read_file();
 
