@@ -62,7 +62,7 @@ class Tree{
         node_ptr root;
         int source[2], destination[2]; // Structure {column,row}.
         int bombs[3][2]; // Structure { {column, row}, {column, row}, {column, row} }.
-        std::stack<node_ptr> path, stack;
+        std::stack<node_ptr> path, stack, parent;
         template <typename enum_class>
         auto as_integer(enum_class const)-> typename std::underlying_type<enum_class>::type;
         node_ptr new_node();

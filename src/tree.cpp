@@ -456,22 +456,29 @@ void Tree::dfs_algorithm(node_ptr branch){
         }
         else{
             if(if_top(branch, branch->current_row-1, branch->current_column))
-                branch->top = move_top(branch); 
+                branch->top = move_top(branch);
             if(if_left(branch, branch->current_row, branch->current_column-1))
                 branch->left = move_left(branch);
             if(if_right(branch, branch->current_row, branch->current_column+1))
                 branch->right = move_right(branch);
             if(if_bottom(branch, branch->current_row+1, branch->current_column))
                 branch->bottom = move_bottom(branch);
+
+            if(branch->top != nullptr || branch->left != nullptr || branch->right != nullptr || branch->bottom != nullptr){
+                parent.push(branch);
+            }
             
             if(branch->bottom != nullptr) stack.push(branch->bottom);
             if(branch->right != nullptr) stack.push(branch->right);
             if(branch->left != nullptr) stack.push(branch->left);
             if(branch->top != nullptr) stack.push(branch->top);
-            if(branch->top == nullptr && branch->left == nullptr && branch->right == nullptr && branch->bottom == nullptr)
+            if(branch->top == nullptr && branch->left == nullptr && branch->right == nullptr && branch->bottom == nullptr){
                 path.pop();
+                delete branch;
+                branch = nullptr;
+            }
+            //if()
             if(!stack.empty()) dfs_algorithm(stack.top());
-
         }
     }
     else{
