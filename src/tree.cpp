@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <deque>
 #include <random>
 #include <chrono>
 #include "../include/tree.hpp"
@@ -536,7 +537,7 @@ void Tree::create_tree(std::vector<int> problem){
      * 
      */
 
-    std::cout << "  CHEAT SHEET." << std::endl;
+    std::cout << "  LOOKUP TABLE." << std::endl;
     std::cout << "Yellow: " << as_integer(square::yellow) << std::endl;
     std::cout << "Blue: " << as_integer(square::blue) << std::endl;
     std::cout << "Red: " << as_integer(square::red) << std::endl;
@@ -547,15 +548,21 @@ void Tree::create_tree(std::vector<int> problem){
     std::cout << "Visited: " << as_integer(square::visited_square) << std::endl;
     std::cout << "Moves: " << path.size()-1 << std::endl << std::endl;
 
+    std::deque<node_ptr> reverse_path;
     while(!path.empty()){
-        node_ptr temp = path.top();
+        reverse_path.push_front(path.top());
+        path.pop();
+    }
+
+    while(!reverse_path.empty()){
+        node_ptr temp = reverse_path.front();
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++)
                 std::cout << "[" << as_integer(temp->board[i][j]) << "]" << " ";
             std::cout << std::endl;
         }
         std::cout << std::endl;
-        path.pop();
+        reverse_path.pop_front();
     }
 
     /*for(int i = 0; i < ROWS; i++){
