@@ -468,7 +468,10 @@ void Tree::dfs_algorithm(node_ptr branch){
             if(branch->right != nullptr) stack.push(branch->right);
             if(branch->left != nullptr) stack.push(branch->left);
             if(branch->top != nullptr) stack.push(branch->top);
+            if(branch->top == nullptr && branch->left == nullptr && branch->right == nullptr && branch->bottom == nullptr)
+                path.pop();
             if(!stack.empty()) dfs_algorithm(stack.top());
+
         }
     }
     else{
@@ -527,9 +530,21 @@ void Tree::create_tree(std::vector<int> problem){
     std::cout << "Bomb Row: " << as_integer(square::bomb_row) << std::endl;
     std::cout << "Bomb Column: " << as_integer(square::bomb_column) << std::endl;
     std::cout << "White: " << as_integer(square::white) << std::endl;
-    std::cout << "Visited: " << as_integer(square::visited_square) << std::endl << std::endl;
+    std::cout << "Visited: " << as_integer(square::visited_square) << std::endl;
+    std::cout << "Moves: " << path.size() << std::endl << std::endl;
 
-    for(int i = 0; i < ROWS; i++){
+    while(!path.empty()){
+        node_ptr temp = path.top();
+        for(int i = 0; i < ROWS; i++){
+            for(int j = 0; j < COLUMNS; j++)
+                std::cout << "[" << as_integer(temp->board[i][j]) << "]" << " ";
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+        path.pop();
+    }
+
+    /*for(int i = 0; i < ROWS; i++){
         for(int j = 0; j < COLUMNS; j++)
             std::cout << "[" << as_integer(root->board[i][j]) << "]" << " ";
         std::cout << std::endl;
@@ -565,7 +580,7 @@ void Tree::create_tree(std::vector<int> problem){
         for(int j = 0; j < COLUMNS; j++)
             std::cout << "[" << as_integer(root->bottom->board[i][j]) << "]" << " ";
         std::cout << std::endl;
-    }
+    }*/
 
 
     /*std::cout << source[0] << " " << source[1] << " " << destination[0] << " " << destination[1] << std::endl;
