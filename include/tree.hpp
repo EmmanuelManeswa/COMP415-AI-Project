@@ -14,9 +14,11 @@
 
 #include <iostream>
 #include <vector>
+#include <stack>
 
 #define ROWS 10
 #define COLUMNS 10
+#define CUTOFF_DEPTH 14
 
 /**
  * @brief The board has ROWS*COLUMNS squares and each square can be in either of the states specified in the enum class.
@@ -47,6 +49,7 @@ class Node{
         square board[ROWS][COLUMNS];
         Node *top, *left, *right, *bottom;
         int prev_row, prev_col, current_row, current_column;
+        int depth;
 };
 
 /**
@@ -59,6 +62,9 @@ class Tree{
         node_ptr root;
         int source[2], destination[2]; // Structure {column,row}.
         int bombs[3][2]; // Structure { {column, row}, {column, row}, {column, row} }.
+        std::stack<node_ptr> path, stack;
+        template <typename enum_class>
+        auto as_integer(enum_class const)-> typename std::underlying_type<enum_class>::type;
         node_ptr new_node();
         void create_bombs();
         bool bombs_verification()const;
@@ -73,15 +79,14 @@ class Tree{
         int possible_bottom_move(node_ptr, int, int)const;
         node_ptr set_possible_moves(node_ptr);
         void create_root();
-        node_ptr create_branches(node_ptr);
         node_ptr move_top(node_ptr);
         node_ptr move_left(node_ptr);
         node_ptr move_right(node_ptr);
         node_ptr move_bottom(node_ptr);
+        void dfs_algorithm(node_ptr);
+        void dfs_algorithm();
     public:
         Tree();
-        template <typename enum_class>
-        auto as_integer(enum_class const value)-> typename std::underlying_type<enum_class>::type;
         void create_tree(std::vector<int>);
 };
 

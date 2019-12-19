@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <vector>
+#include <stack>
 #include <random>
 #include <chrono>
 #include "../include/tree.hpp"
@@ -248,6 +249,7 @@ void Tree::create_root(){
     root->current_row = source[1];
     root->current_column = source[0];
 
+    root->depth = 0;
     /**
      * @brief The following for loop sets up the bombs/mines to their respective squares on the board.
      * 
@@ -282,24 +284,6 @@ void Tree::create_root(){
 }
 
 /**
- * @brief The following function creates the branches of the tree.
- * 
- * @param branch 
- * @return Tree::node_ptr 
- */
-Tree::node_ptr Tree::create_branches(node_ptr branch){
-    if(if_top(branch, branch->current_row-1, branch->current_column))
-        branch->top = move_top(branch);
-    if(if_left(branch, branch->current_row, branch->current_column-1))
-        branch->left = move_left(branch);
-    if(if_right(branch, branch->current_row, branch->current_column+1))
-        branch->right = move_right(branch);
-    if(if_bottom(branch, branch->current_row+1, branch->current_column))
-        branch->bottom = move_bottom(branch);
-    return branch;
-}
-
-/**
  * @brief The following function creates a branch of the tree for the move of going top.
  * 
  * @param branch 
@@ -314,6 +298,7 @@ Tree::node_ptr Tree::move_top(node_ptr branch){
                 branch->top->board[i][j] = square::yellow;
                 branch->top->current_row = i;
                 branch->top->current_column = j;
+                branch->top->depth = branch->depth+1;
                 branch->top->prev_row = branch->current_row;
                 branch->top->prev_col = branch->current_column;
                 branch->top->board[branch->top->prev_row][branch->top->prev_col] = square::visited_square;
@@ -334,7 +319,6 @@ Tree::node_ptr Tree::move_top(node_ptr branch){
     if(is_goal(branch->top))
         return branch->top;
     branch->top = set_possible_moves(branch->top);
-    branch->top = create_branches(branch->top);
     return branch->top;
 }
 
@@ -353,6 +337,7 @@ Tree::node_ptr Tree::move_left(node_ptr branch){
                 branch->left->board[i][j] = square::yellow;
                 branch->left->current_row = i;
                 branch->left->current_column = j;
+                branch->left->depth = branch->depth+1;
                 branch->left->prev_row = branch->current_row;
                 branch->left->prev_col = branch->current_column;
                 branch->left->board[branch->left->prev_row][branch->left->prev_col] = square::visited_square;
@@ -373,7 +358,6 @@ Tree::node_ptr Tree::move_left(node_ptr branch){
     if(is_goal(branch->left))
         return branch->left;
     branch->left = set_possible_moves(branch->left);
-    branch->left = create_branches(branch->left);
     return branch->left;
 }
 
@@ -392,6 +376,7 @@ Tree::node_ptr Tree::move_right(node_ptr branch){
                 branch->right->board[i][j] = square::yellow;
                 branch->right->current_row = i;
                 branch->right->current_column = j;
+                branch->right->depth = branch->depth+1;
                 branch->right->prev_row = branch->current_row;
                 branch->right->prev_col = branch->current_column;
                 branch->right->board[branch->right->prev_row][branch->right->prev_col] = square::visited_square;
@@ -412,7 +397,6 @@ Tree::node_ptr Tree::move_right(node_ptr branch){
     if(is_goal(branch->right))
         return branch->right;
     branch->right = set_possible_moves(branch->right);
-    branch->right = create_branches(branch->right);
     return branch->right;
 }
 
@@ -431,6 +415,7 @@ Tree::node_ptr Tree::move_bottom(node_ptr branch){
                 branch->bottom->board[i][j] = square::yellow;
                 branch->bottom->current_row = i;
                 branch->bottom->current_column = j;
+                branch->bottom->depth = branch->depth+1;
                 branch->bottom->prev_row = branch->current_row;
                 branch->bottom->prev_col = branch->current_column;
                 branch->bottom->board[branch->bottom->prev_row][branch->bottom->prev_col] = square::visited_square;
@@ -451,8 +436,53 @@ Tree::node_ptr Tree::move_bottom(node_ptr branch){
     if(is_goal(branch->bottom))
         return branch->bottom;
     branch->bottom = set_possible_moves(branch->bottom);
-    branch->bottom = create_branches(branch->bottom);
     return branch->bottom;
+}
+
+/**
+ * @brief 
+ * 
+ * @param branch 
+ */
+void Tree::dfs_algorithm(node_ptr branch){
+    path.push(branch);
+    if(!is_goal(branch) && branch->depth <= CUTOFF_DEPTH){
+        stack.pop();
+        if(branch->depth == CUTOFF_DEPTH){
+            path.pop();
+            delete branch;
+            branch = nullptr;
+            if(!stack.empty()) dfs_algorithm(stack.top());
+        }
+        else{
+            if(if_top(branch, branch->current_row-1, branch->current_column))
+                branch->top = move_top(branch); 
+            if(if_left(branch, branch->current_row, branch->current_column-1))
+                branch->left = move_left(branch);
+            if(if_right(branch, branch->current_row, branch->current_column+1))
+                branch->right = move_right(branch);
+            if(if_bottom(branch, branch->current_row+1, branch->current_column))
+                branch->bottom = move_bottom(branch);
+            
+            if(branch->bottom != nullptr) stack.push(branch->bottom);
+            if(branch->right != nullptr) stack.push(branch->right);
+            if(branch->left != nullptr) stack.push(branch->left);
+            if(branch->top != nullptr) stack.push(branch->top);
+            if(!stack.empty()) dfs_algorithm(stack.top());
+        }
+    }
+    else{
+        stack.pop();
+    }
+}
+
+/**
+ * @brief 
+ * 
+ */
+void Tree::dfs_algorithm(){
+    stack.push(root);
+    dfs_algorithm(root);
 }
 
 /**
@@ -482,9 +512,7 @@ void Tree::create_tree(std::vector<int> problem){
         create_bombs();
     }while(bombs_verification());
     create_root();
-    if(!is_goal(root)){
-        root = create_branches(root);
-    }
+    dfs_algorithm();
 
     /**
      * @brief The following lines of codes are tests.
