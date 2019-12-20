@@ -38,3 +38,11 @@ chrono
 ../include/tree.hpp
 /home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/include/tree.hpp
 
+/home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/src/write_file.cpp
+iostream
+-
+vector
+-
+fstream
+-
+

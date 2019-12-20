@@ -40,7 +40,7 @@ enum class square{
 };
 
 /**
- * @brief 
+ * @brief Node definifion.
  * 
  */
 class Node{
@@ -52,7 +52,7 @@ class Node{
 };
 
 /**
- * @brief 
+ * @brief Class of tree functions definitions.
  * 
  */
 class Tree{

@@ -29,7 +29,7 @@ std::vector<std::vector<int>> read_file();
 void write_file(std::vector<std::vector<int>>);
 
 /**
- * @brief 
+ * @brief Execution of the program starts from here.
  * 
  * @param argc 
  * @param argv 

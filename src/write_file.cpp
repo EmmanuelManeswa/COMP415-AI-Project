@@ -13,6 +13,11 @@
 #include <vector>
 #include <fstream>
 
+/**
+ * @brief The following function opens/creates the solution.txt file and writes the solutions into the file.
+ * 
+ * @param solutions 
+ */
 void write_file(std::vector<std::vector<int>> solutions){
     std::ofstream output_file("../data/solution.txt");
     if(output_file.is_open()){
@@ -45,4 +50,5 @@ void write_file(std::vector<std::vector<int>> solutions){
             output_file << std::endl;
         }
     }
+    output_file.close();
 }
