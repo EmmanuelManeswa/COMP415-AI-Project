@@ -564,7 +564,6 @@ std::vector<int> Tree::create_tree(std::vector<int> problem){
         std::cout << "Moves: " << path.size()-1 << std::endl << std::endl;
 
         std::deque<node_ptr> reverse_path;
-        std::vector<int> solution;
         while(!path.empty()){
             reverse_path.push_front(path.top());
             path.pop();

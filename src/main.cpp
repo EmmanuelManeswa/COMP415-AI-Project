@@ -14,12 +14,19 @@
 #include "../include/tree.hpp"
 
 /**
- * @brief Implementation in read_file.cpp. The function opens the text file and reads  the information
- * storing it into a 2d-vector (vector of vectors).
+ * @brief Implementation in read_file.cpp. The function opens the text file and reads the information storing it into
+ *  a 2d-vector (vector of vectors).
  * 
  * @return std::vector<std::vector<int>> 
  */
 std::vector<std::vector<int>> read_file();
+
+/**
+ * @brief Implementation in write_file.cpp. The function create the text file and writes the solutions stored in the 
+ * 2d-vector (vector of vectors).
+ * 
+ */
+void write_file(std::vector<std::vector<int>>);
 
 /**
  * @brief 
@@ -36,6 +43,13 @@ int main(void){
     Tree test[problems.size()];
     for(int i = 0; i < problems.size(); i++)
         solutions.push_back(test[i].create_tree(problems[i]));
+    
+    /*for(auto vv : solutions){
+        for(auto v : vv)
+            std::cout << std::endl << v << " ";
+        std::cout << std::endl;
+    }*/
+    write_file(solutions);
 
     return 0;
 }
