@@ -18,7 +18,6 @@
 
 #define ROWS 10
 #define COLUMNS 10
-#define CUTOFF_DEPTH 14
 
 /**
  * @brief The board has ROWS*COLUMNS squares and each square can be in either of the states specified in the enum class.

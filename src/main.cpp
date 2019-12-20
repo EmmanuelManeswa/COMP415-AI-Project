@@ -44,11 +44,6 @@ int main(void){
     for(int i = 0; i < problems.size(); i++)
         solutions.push_back(test[i].create_tree(problems[i]));
     
-    /*for(auto vv : solutions){
-        for(auto v : vv)
-            std::cout << std::endl << v << " ";
-        std::cout << std::endl;
-    }*/
     write_file(solutions);
 
     return 0;

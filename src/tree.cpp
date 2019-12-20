@@ -442,17 +442,27 @@ Tree::node_ptr Tree::move_bottom(node_ptr branch){
 
 /**
  * @brief The following function searches for the path to destination using dfs algorithm. Inorder to utilize memory
- * the algorithm frees/deletes the nodes that has already been searched and do not have a link to the path. It uses 
- * a cutoff depth of 14 which is the maximum optimal number of moves from 2 furthest points eg ([0,9] and [9,0]).
+ * the algorithm frees/deletes the nodes that has already been searched and do not have a link to the path.
  * 
  * @param branch 
  */
 void Tree::dfs_algorithm(node_ptr branch){
     path.push(branch);
-    if(!is_goal(branch) && branch->depth <= CUTOFF_DEPTH){
-        //node_ptr temp = stack.top();
+    if(!is_goal(branch)){
         stack.pop();
-        if(branch->depth == CUTOFF_DEPTH){
+        if(if_top(branch, branch->current_row-1, branch->current_column))
+            branch->top = move_top(branch);
+        if(if_left(branch, branch->current_row, branch->current_column-1))
+            branch->left = move_left(branch);
+        if(if_right(branch, branch->current_row, branch->current_column+1))
+            branch->right = move_right(branch);
+        if(if_bottom(branch, branch->current_row+1, branch->current_column))
+            branch->bottom = move_bottom(branch);
+        if(branch->bottom != nullptr) stack.push(branch->bottom);
+        if(branch->right != nullptr) stack.push(branch->right);
+        if(branch->left != nullptr) stack.push(branch->left);
+        if(branch->top != nullptr) stack.push(branch->top);
+        if(branch->top == nullptr && branch->left == nullptr && branch->right == nullptr && branch->bottom == nullptr){
             while(path.top()->depth > stack.top()->depth){
                 path.pop();
                 delete branch;
@@ -461,33 +471,8 @@ void Tree::dfs_algorithm(node_ptr branch){
             path.pop();
             delete branch;
             branch = nullptr;
-            if(!stack.empty()) dfs_algorithm(stack.top());
         }
-        else{
-            if(if_top(branch, branch->current_row-1, branch->current_column))
-                branch->top = move_top(branch);
-            if(if_left(branch, branch->current_row, branch->current_column-1))
-                branch->left = move_left(branch);
-            if(if_right(branch, branch->current_row, branch->current_column+1))
-                branch->right = move_right(branch);
-            if(if_bottom(branch, branch->current_row+1, branch->current_column))
-                branch->bottom = move_bottom(branch);
-            if(branch->bottom != nullptr) stack.push(branch->bottom);
-            if(branch->right != nullptr) stack.push(branch->right);
-            if(branch->left != nullptr) stack.push(branch->left);
-            if(branch->top != nullptr) stack.push(branch->top);
-            if(branch->top == nullptr && branch->left == nullptr && branch->right == nullptr && branch->bottom == nullptr){
-                path.pop();
-                delete branch;
-                branch = nullptr;
-            }
-            while(path.top()->depth > stack.top()->depth){
-                path.pop();
-                delete branch;
-                branch = nullptr;
-            }
-            if(!stack.empty()) dfs_algorithm(stack.top());
-        }
+        if(!stack.empty()) dfs_algorithm(stack.top());
     }
     else{
         stack.pop();
