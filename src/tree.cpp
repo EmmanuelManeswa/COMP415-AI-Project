@@ -517,97 +517,79 @@ auto Tree::as_integer(enum_class const value)-> typename std::underlying_type<en
 }
 
 /**
- * @brief 
+ * @brief The following function checks if the given start and destination positions are within the range of the 10*10 board.
  * 
  * @param problem 
+ * @return true : If they are all within range.
+ * @return false : If one/all of them are out of range.
  */
-void Tree::create_tree(std::vector<int> problem){
-    source[0] = problem[0];
-    source[1] = problem[1];
-    destination[0] = problem[2];
-    destination[1] = problem[3];
-    do{
-        create_bombs();
-    }while(bombs_verification());
-    create_root();
-    dfs_algorithm();
+bool Tree::source_destination_verification(std::vector<int> problem)const{
+    if(problem[0] >= COLUMNS || problem[1] >= ROWS || problem[0] < 0 || problem[1] < 0 || problem[2] >= COLUMNS
+    || problem[3] >= ROWS || problem[2] < 0 || problem[3] < 0)
+        return false;
+    return true;
+}
 
-    /**
-     * @brief The following lines of codes are tests.
-     * 
-     */
+/**
+ * @brief The following function calls all the required functions to create the root and  bombs and also verifies
+ * the bombs. It then calls the dfs_algorithm function to begin the path search. It also prints the path states and
+ * also stores the information required in the solution.txt file in the vector that will then be returned to the
+ * calling function.
+ * 
+ * @param problem 
+ * @return std::vector<int> 
+ */
+std::vector<int> Tree::create_tree(std::vector<int> problem){
+    std::vector<int> solution;
+    if(source_destination_verification(problem)){
+        source[0] = problem[0];
+        source[1] = problem[1];
+        destination[0] = problem[2];
+        destination[1] = problem[3];
+        do{
+            create_bombs();
+        }while(bombs_verification());
+        create_root();
+        dfs_algorithm();
 
-    std::cout << "  LOOKUP TABLE." << std::endl;
-    std::cout << "Yellow: " << as_integer(square::yellow) << std::endl;
-    std::cout << "Blue: " << as_integer(square::blue) << std::endl;
-    std::cout << "Red: " << as_integer(square::red) << std::endl;
-    std::cout << "Bomb: " << as_integer(square::bomb) << std::endl;
-    std::cout << "Bomb Row: " << as_integer(square::bomb_row) << std::endl;
-    std::cout << "Bomb Column: " << as_integer(square::bomb_column) << std::endl;
-    std::cout << "White: " << as_integer(square::white) << std::endl;
-    std::cout << "Visited: " << as_integer(square::visited_square) << std::endl;
-    std::cout << "Moves: " << path.size()-1 << std::endl << std::endl;
+        std::cout << "  LOOKUP TABLE." << std::endl;
+        std::cout << "Yellow: " << as_integer(square::yellow) << std::endl;
+        std::cout << "Blue: " << as_integer(square::blue) << std::endl;
+        std::cout << "Red: " << as_integer(square::red) << std::endl;
+        std::cout << "Bomb: " << as_integer(square::bomb) << std::endl;
+        std::cout << "Bomb Row: " << as_integer(square::bomb_row) << std::endl;
+        std::cout << "Bomb Column: " << as_integer(square::bomb_column) << std::endl;
+        std::cout << "White: " << as_integer(square::white) << std::endl;
+        std::cout << "Visited: " << as_integer(square::visited_square) << std::endl;
+        std::cout << "Moves: " << path.size()-1 << std::endl << std::endl;
 
-    std::deque<node_ptr> reverse_path;
-    while(!path.empty()){
-        reverse_path.push_front(path.top());
-        path.pop();
-    }
-
-    while(!reverse_path.empty()){
-        node_ptr temp = reverse_path.front();
-        for(int i = 0; i < ROWS; i++){
-            for(int j = 0; j < COLUMNS; j++)
-                std::cout << "[" << as_integer(temp->board[i][j]) << "]" << " ";
-            std::cout << std::endl;
+        std::deque<node_ptr> reverse_path;
+        std::vector<int> solution;
+        while(!path.empty()){
+            reverse_path.push_front(path.top());
+            path.pop();
         }
-        std::cout << std::endl;
-        reverse_path.pop_front();
+        
+        solution.push_back(reverse_path.size()-1);
+        for(int i = 0; i < 3; i++){
+            solution.push_back(bombs[i][0]);
+            solution.push_back(bombs[i][1]);
+        }
+        while(!reverse_path.empty()){
+            node_ptr temp = reverse_path.front();
+            for(int i = 0; i < ROWS; i++){
+                for(int j = 0; j < COLUMNS; j++)
+                    std::cout << "[" << as_integer(temp->board[i][j]) << "]" << " ";
+                std::cout << std::endl;
+            }
+            std::cout << std::endl;
+            solution.push_back(temp->current_column);
+            solution.push_back(temp->current_row);
+            reverse_path.pop_front();
+        }
     }
+    else
+        solution.push_back(0);
 
-    /*for(int i = 0; i < ROWS; i++){
-        for(int j = 0; j < COLUMNS; j++)
-            std::cout << "[" << as_integer(root->board[i][j]) << "]" << " ";
-        std::cout << std::endl;
-    }
-    
-    std::cout << std::endl;
-
-    for(int i = 0; i < ROWS; i++){
-        for(int j = 0; j < COLUMNS; j++)
-            std::cout << "[" << as_integer(root->top->board[i][j]) << "]" << " ";
-        std::cout << std::endl;
-    }
-
-    std::cout << std::endl;
-
-    for(int i = 0; i < ROWS; i++){
-        for(int j = 0; j < COLUMNS; j++)
-            std::cout << "[" << as_integer(root->left->board[i][j]) << "]" << " ";
-        std::cout << std::endl;
-    }
-
-    std::cout << std::endl;
-
-    for(int i = 0; i < ROWS; i++){
-        for(int j = 0; j < COLUMNS; j++)
-            std::cout << "[" << as_integer(root->right->board[i][j]) << "]" << " ";
-        std::cout << std::endl;
-    }
-
-    std::cout << std::endl;
-
-    for(int i = 0; i < ROWS; i++){
-        for(int j = 0; j < COLUMNS; j++)
-            std::cout << "[" << as_integer(root->bottom->board[i][j]) << "]" << " ";
-        std::cout << std::endl;
-    }*/
-
-
-    /*std::cout << source[0] << " " << source[1] << " " << destination[0] << " " << destination[1] << std::endl;
-    for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 2; j++)
-            std::cout << "[" << bombs[i][j] << "]";
-        std::cout << std::endl;
-    }*/
+    return solution;
 }

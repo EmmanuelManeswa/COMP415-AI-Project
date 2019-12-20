@@ -85,9 +85,10 @@ class Tree{
         node_ptr move_bottom(node_ptr);
         void dfs_algorithm(node_ptr);
         void dfs_algorithm();
+        bool source_destination_verification(std::vector<int>)const;
     public:
         Tree();
-        void create_tree(std::vector<int>);
+        std::vector<int> create_tree(std::vector<int>);
 };
 
 #endif

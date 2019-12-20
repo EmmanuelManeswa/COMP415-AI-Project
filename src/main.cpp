@@ -31,16 +31,11 @@ std::vector<std::vector<int>> read_file();
 int main(void){
 
     std::vector<std::vector<int>> problems = read_file();
+    std::vector<std::vector<int>> solutions;
 
     Tree test[problems.size()];
     for(int i = 0; i < problems.size(); i++)
-        test[i].create_tree(problems[i]);
-
-    /*for(int i = 0; i < problems.size(); i++){
-        for(int j = 0; j < problems[i].size(); j++)
-            std::cout << problems[i][j] << " ";
-        std::cout << std::endl;
-    }*/
+        solutions.push_back(test[i].create_tree(problems[i]));
 
     return 0;
 }
