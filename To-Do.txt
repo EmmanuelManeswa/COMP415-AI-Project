@@ -1,0 +1,2 @@
+ 
+1. Make the table size changable easily. REF(Version 2 of this program)
