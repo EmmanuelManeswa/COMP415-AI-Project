@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/include/tree.hpp
+/home/emmanuel/Projects/COMP415 AI Project (C++)/include/tree.hpp
 iostream
 -
 vector
@@ -14,15 +14,15 @@ vector
 stack
 -
 
-/home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/src/main.cpp
+/home/emmanuel/Projects/COMP415 AI Project (C++)/src/main.cpp
 iostream
 -
 vector
 -
 ../include/tree.hpp
-/home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/include/tree.hpp
+/home/emmanuel/Projects/COMP415 AI Project (C++)/include/tree.hpp
 
-/home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/src/tree.cpp
+/home/emmanuel/Projects/COMP415 AI Project (C++)/src/tree.cpp
 iostream
 -
 vector
@@ -36,13 +36,5 @@ random
 chrono
 -
 ../include/tree.hpp
-/home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/include/tree.hpp
-
-/home/emmanuel/Projects/VSCode Projects/COMP415 AI Project (C++)/src/write_file.cpp
-iostream
--
-vector
--
-fstream
--
+/home/emmanuel/Projects/COMP415 AI Project (C++)/include/tree.hpp
 
